@@ -1,5 +1,4 @@
 import { Schema, model, models } from 'mongoose';
-import { StringXor } from 'next/dist/compiled/webpack/webpack';
 
 const UserSchema = new Schema({
     email : {

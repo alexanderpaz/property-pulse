@@ -10,6 +10,10 @@ const PropertySchema = new Schema({
         type: String,
         required: [true, 'Name is required'],
     },
+    type: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
     },
@@ -26,6 +30,14 @@ const PropertySchema = new Schema({
         zipcode: {
             type: String
         }
+    },
+    beds: {
+        type: Number,
+        required: true
+    },
+    baths: {
+        type: Number,
+        required: true
     },
     square_feet: {
         type: Number,
@@ -60,7 +72,7 @@ const PropertySchema = new Schema({
         type: String,
         required: [true, 'Image is required'],
     }],
-    isFeatured: {
+    is_featured: {
         type: Boolean,
         default: false
     }

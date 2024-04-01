@@ -5,9 +5,9 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Marker } from "react-map-gl";
 import { setDefaults, fromAddress } from "react-geocode";
 import Spinner from "./Spinner";
-import { Image } from "next/image";
+import Image from "next/image";
 import pin from "@/assets/images/pin.svg";
-import { FaMapMarker } from 'react-icons/fa';
+import { FaMapMarker } from "react-icons/fa";
 
 const PropertyMap = ({ property }) => {
   const [lat, setLat] = useState(null);
@@ -71,7 +71,7 @@ const PropertyMap = ({ property }) => {
         mapStyle="mapbox://styles/mapbox/streets-v11"
       >
         <Marker latitude={lat} longitude={lng} anchor="bottom">
-        <FaMapMarker className="fa-solid fa-location-dot text-2xl text-orange-700 mr-2"></FaMapMarker>  
+          <Image src={pin} alt="pin" width={30} height={30} />
         </Marker>
       </Map>
     )

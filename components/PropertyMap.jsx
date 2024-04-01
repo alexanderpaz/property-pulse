@@ -7,7 +7,6 @@ import { setDefaults, fromAddress } from "react-geocode";
 import Spinner from "./Spinner";
 import Image from "next/image";
 import pin from "@/assets/images/pin.svg";
-import { FaMapMarker } from "react-icons/fa";
 
 const PropertyMap = ({ property }) => {
   const [lat, setLat] = useState(null);
@@ -22,6 +21,8 @@ const PropertyMap = ({ property }) => {
 
   const [loading, setLoading] = useState(true);
 
+  const [geocodeError, setGeocodeError] = useState(false);
+
   setDefaults({
     key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY,
     language: "en",
@@ -30,23 +31,36 @@ const PropertyMap = ({ property }) => {
 
   useEffect(() => {
     const fetchCoords = async () => {
-      const res = await fromAddress(
-        `${property.location.street} ${property.location.city} ${property.location.state} ${property.location.zip}`
-      );
+      try {
+        const res = await fromAddress(
+          `${property.location.street} ${property.location.city} ${property.location.state} ${property.location.zipcode}`
+        );
 
-      const { lat, lng } = res.results[0].geometry.location;
+        // Check for results
+        if (res.results.length === 0) {
+          // No results found
+          setGeocodeError(true);
+          setLoading(false);
+          return;
+        }
+        const { lat, lng } = res.results[0].geometry.location;
 
-      setLat(lat);
+        setLat(lat);
 
-      setLng(lng);
+        setLng(lng);
 
-      setViewport({
-        ...viewport,
-        latitude: lat,
-        longitude: lng,
-      });
+        setViewport({
+          ...viewport,
+          latitude: lat,
+          longitude: lng,
+        });
 
-      setLoading(false);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setGeocodeError(true);
+        setLoading(false);
+      }
     };
 
     fetchCoords();
@@ -54,6 +68,9 @@ const PropertyMap = ({ property }) => {
 
   if (loading) return <Spinner loading={loading} />;
 
+  if (geocodeError) {
+    return <div className="text-xl">No location data found</div>;
+  }
   return (
     !loading && (
       <Map

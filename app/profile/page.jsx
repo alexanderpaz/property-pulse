@@ -44,7 +44,31 @@ const ProfilePage = () => {
 
     }, [session]);
 
-    const handleDeleteProperty = async (propertyId) => {};
+    const handleDeleteProperty = async (propertyId) => {
+        const confirmed = window.confirm('Are you sure you want to delete this property?');
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/properties/${propertyId}`, { method: 'DELETE' });
+            
+            if (res.status === 200) {
+                // Remove the property from state
+                const updatedProperties = properties.filter((property) => property._id !== propertyId);
+
+                setProperties(updatedProperties);
+
+                alert('Property deleted');
+            } else {
+                alert('Failed to delete property');
+            }
+        } catch (error) {
+            console.log(error);
+            alert('Failed to delete property');
+        }
+    };
 
   return (
     <section className="bg-blue-50">
@@ -64,10 +88,10 @@ const ProfilePage = () => {
                 />
               </div>
               <h2 className="text-2xl mb-4">
-                <span className="font-bold block">Name: </span> { session.user.name}
+                <span className="font-bold block">Name: </span> { profileName }
               </h2>
               <h2 className="text-2xl">
-                <span className="font-bold block">Email: </span> { session.user.email }
+                <span className="font-bold block">Email: </span> { profileEmail }
               </h2>
             </div>
 

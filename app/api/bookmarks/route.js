@@ -5,6 +5,46 @@ import { getSessionUser } from '@/utils/getSessionUser';
 
 export const dynamic = 'force-dynamic';
 
+// GET /api/bookmarks
+
+export const GET = async () => {
+    try {
+      await connectDB();
+      const sessionUser = await getSessionUser();
+  
+      if (!sessionUser || !sessionUser.userId) {
+        return new Response("User Id is required", {
+          status: 401,
+        });
+      }
+  
+      const { userId } = sessionUser;
+  
+      //Find user in DB
+      const user = await User.findOne({ _id: userId });
+  
+      // Get user bookmarks
+      const bookmarks = await Property.find({ _id: { $in: user.bookmarks } });
+  
+      return new Response(
+        JSON.stringify(
+          bookmarks
+        ),
+        {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      return new Response("An error occurred. Please try again.", {
+        status: 500,
+      });
+    }
+  };
+
 export const POST = async (request) => {
     try {
         await connectDB();

@@ -1,7 +1,7 @@
 import Properties from "@/components/Properties";
 import PropertySearchForm from "@/components/PropertySearchForm";
 
-const PropertiesPage = async () => {
+const PropertiesPage = async ({properties}) => {
   
   return (
     <>

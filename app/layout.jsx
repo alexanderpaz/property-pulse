@@ -2,9 +2,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
 import { ToastContainer } from "react-toastify";
+import { GlobalProvider } from "@/context/GlobalContext";
 import "@/assets/styles/global.css";
 import "react-toastify/dist/ReactToastify.css";
-import { GlobalProvider } from "@/context/GlobalContext";
+import 'photoswipe/dist/photoswipe.css';
 
 export const viewport = {
   width: "device-width",

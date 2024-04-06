@@ -3,17 +3,21 @@
 import {useState, useEffect} from 'react';
 import PropertyCard from '@/components/PropertyCard';
 import Spinner from '@/components/Spinner';
+import Pagination from '@/components/Pagination';
 
 
 const Properties = () => {
 
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(6);
+    const [totalItems, setTotalItems] = useState(0);
 
     useEffect(() => {
         const fetchProperties = async () => {
             try {
-                const res = await fetch('/api/properties');
+                const res = await fetch(`/api/properties?page=${page}&pageSize=${pageSize}`);
 
                 if (!res.ok) {
                     throw new Error('Something went wrong while fetching the data');
@@ -21,7 +25,8 @@ const Properties = () => {
 
                 const data = await res.json();
 
-                setProperties(data);
+                setProperties(data.properties);
+                setTotalItems(data.total);
             } catch (error) {
                 console.log(error);
             } finally {
@@ -29,7 +34,11 @@ const Properties = () => {
             }
         };
         fetchProperties();
-    }, []);
+    }, [page, pageSize]);
+
+    const handlePageChange = (newPage) => {
+      setPage(newPage);
+    }
 
 
 
@@ -45,6 +54,7 @@ const Properties = () => {
             ))}
           </div>
         )}
+        <Pagination page={page} pageSize={pageSize} totalItems={totalItems} onPageChange={handlePageChange} />
       </div>
     </section>
   );

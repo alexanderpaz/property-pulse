@@ -13,7 +13,7 @@ const currentYear = new Date().getFullYear();
         </div>
         <div>
           <p className="text-sm text-gray-500 mt-2 md:mt-0">
-            &copy; { currentYear } PropertyPulse. All rights reserved.
+          Developed by Alex Paz - &copy; { currentYear } PropertyPulse. All rights reserved.  
           </p>
         </div>
       </div>
